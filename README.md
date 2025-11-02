@@ -33,8 +33,6 @@ Create a `.env` file in the root directory:
 GOOGLE_CLIENT_ID=your_client_id_from_google_cloud_console
 GOOGLE_CLIENT_SECRET=your_client_secret_from_google_cloud_console
 GOOGLE_REDIRECT_URI=http://localhost:3010/auth/google
-GOOGLE_REFRESH_TOKEN=''
-GOOGLE_ACCESS_TOKEN=''
 ```
 
 ### Run the Application

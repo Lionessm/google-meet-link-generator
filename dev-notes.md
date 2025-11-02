@@ -126,8 +126,6 @@ Once the endpoint was implemented and I added the logic for the refresh_token an
 GOOGLE_CLIENT_ID=your_client_id_from_console
 GOOGLE_CLIENT_SECRET=your_client_secret_from_console
 GOOGLE_REDIRECT_URI=http://localhost:3010/auth/google
-GOOGLE_REFRESH_TOKEN=''
-GOOGLE_ACCESS_TOKEN=''
 ```
 
 ## Useful Resources
