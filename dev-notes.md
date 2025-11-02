@@ -1,8 +1,5 @@
 # Dev Diary: Google Meet Link Generator
 
-## Project Overview
-A NestJS-based backend application that programmatically generates Google Meet links by creating calendar events with Meet video conferencing enabled.
-
 ## Setup Exploration & Key Decisions
 
 ### Why NestJS?
@@ -17,6 +14,16 @@ A NestJS-based backend application that programmatically generates Google Meet l
 
 **Alternative Considered**: Plain Express.js
 **Why Not**: While simpler initially, Express would require more manual setup for dependency injection, testing, and maintaining clean architecture as complexity grows.
+
+### Why Google APIs Node.js Client for Meet SDK?
+**Decision**: Use `googleapis` (Google APIs Node.js Client Library) instead of a standalone Meet SDK
+
+**Reasoning**: It is the official supported way of creating meetings on google. Whenever we see oficial documentation with clear aspects and maintained support, it is the best choice.
+
+**Alternatives Considered**:
+- Standalone Meet SDK: Doesn't exist; Meet links are part of Calendar events
+- Google Calendar REST API directly: Would require manual OAuth2 implementation and request handling
+- Other third-party libraries: Less official support and may not stay current with API changes
 
 ### Architecture Breakdown Consideration - Overview: Two-Part Logic
 The application logic is divided into two distinct parts:
@@ -36,7 +43,6 @@ The application logic is divided into two distinct parts:
   - `createMeetingEvent()` - Creates calendar event with Meet conference data
 - **Endpoints**:
   - `POST /` - Creates the meeting and returns Meet link
-
 
 
 #### Getting Google OAuth Credentials ⚠️
@@ -87,15 +93,23 @@ Getting credentials for using your personal email as a bot. An alternative is to
 
 **My redirect URI**: `http://localhost:3010/auth/google`
 
-Once the endpoint was implemented and I added the logic for the refresh_token and access_token, the implementation went smoothly. 
+Once the endpoint was implemented and I added the logic for the refresh_token and access_token, the implementation went smoothly.
+
+**Setup of generateAuthUrl considerations**:
+- By using `generateAuthUrl()` with `access_type: 'offline'`, we get a refresh token. This is very important for the developement phases. In addition to this I also added the `prompt: 'consent'` parameter ensures the refresh token is always returned (important for subsequent requests).
+
+**OAuth Scopes - Important Considerations**:
+- The `scope` parameter in `generateAuthUrl()` defines what permissions your app needs. For this project, we use: `'https://www.googleapis.com/auth/calendar'` because it allows the app to create, read, update, and delete calendar events.
+⚠️ **Critical**: All required scopes must be requested during initial authentication
+- For this MVP, we only request Calendar permissions, which is sufficient for generating Meet links through calendar events 
 
 6. **Installed `open` Package for Automatic Window Opening**
    - In order to avoid a tedious debugging session while testing, I added the open package that redirects to the authentication browser, for an easier experience.
 
 7. **Interesting metrics to consider and monitor**
    - In your app dashboard, you will find something similar to the below image. It is a powerful monitoring tool worth exploring.
-   
-![APIs and Services Dashboard](apis_and_services.png)
+
+![APIs and Services Dashboard](./apis_and_services.png)
 
 ### Environment Variables Required
 ```env
