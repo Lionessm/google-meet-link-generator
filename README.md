@@ -7,7 +7,7 @@ A NestJS-based backend application that programmatically generates Google Meet l
 This project demonstrates:
 - **NestJS** framework for modular, scalable Node.js applications
 - **Google Calendar API** integration via the official `googleapis` Node.js client
-- **OAuth2 authentication** flow with refresh token management
+- **OAuth2 authentication** flow
 - **Programmatic Meet link generation** through calendar events
 
 For detailed technical decisions, architecture breakdown, and setup challenges, see [dev-notes.md](dev-notes.md).
