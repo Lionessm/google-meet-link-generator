@@ -116,7 +116,7 @@ Once the endpoint was implemented and I added the logic for the refresh_token an
 8. **Implemented Improvement: Sending email to recipients**
 - A good improvement is to enable Gmail API integration to automatically send Meet link invitations to attendees
 - **Gmail Scope**: `https://www.googleapis.com/auth/gmail.send` - this link is needed for the initial instantiation of OAuth and the token and refresh_token contain the permissions based on the scope so I added it to the SCOPE variable.
-- IMPORTANT: Because we have previously set up the OAuth client credentials, we no longer need to add other credentials as they are available per project. However, we have to **Enable Google Email API** as we do not have it enabled by default. So we will go again to the Project page, APIs and services -> Enable APIs -> Gmail API -> and enable.
+- ⚠️ **IMPORTANT**: Because we have previously set up the OAuth client credentials, we no longer need to add other credentials as they are available per project. However, we have to **Enable Gmail API** as we do not have it enabled by default. Go to Project page → APIs & Services → Enable APIs → Search "Gmail API" → Enable.
 - The only step left is to add the email sending logic and the email body. I added a separate emailTemplate file for better readability and highly recommend it in case you want to vary between templates and have modular extensible best coding practices. And below you can see the final result:
 
 ![Sent Email](./sent_email.png)
