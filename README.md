@@ -20,15 +20,15 @@ npm install
 Create a `.env` file in the root directory:
 
 ```env
-GOOGLE_CLIENT_ID=your_client_id_from_console
-GOOGLE_CLIENT_SECRET=your_client_secret_from_console
+GOOGLE_CLIENT_ID=your_client_id_from_google_cloud_console
+GOOGLE_CLIENT_SECRET=your_client_secret_from_google_cloud_console
 GOOGLE_REDIRECT_URI=http://localhost:3010/auth/google
 ```
 
 ### Run the Application
 
 ```bash
-npm run start:dev
+npm run start
 ```
 
 The application will start on port 3010.
@@ -36,6 +36,14 @@ The application will start on port 3010.
 ### First-Time Authentication
 
 Visit http://localhost:3010/auth/google/refresh-token to authenticate with Google.
+
+Or use curl:
+
+```bash
+curl --location 'http://localhost:3010/auth/google/refresh-token'
+```
+
+This will open your browser automatically for Google OAuth authentication.
 
 ## Usage Example
 
