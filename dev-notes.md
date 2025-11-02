@@ -124,8 +124,6 @@ GOOGLE_ACCESS_TOKEN=''
 
 ### Google APIs Node.js Client Library - useful for implementation
 - **Official Documentation**: [google-api-nodejs-client](https://github.com/googleapis/google-api-nodejs-client?tab=readme-ov-file#oauth2-client)
-- **OAuth2 Client Documentation**: Comprehensive guide on OAuth2 authentication flows with the official Google API client
-
 - **Google Calendar API**: https://developers.google.com/calendar
 - **Google Cloud Console**: https://console.cloud.google.com/
 
