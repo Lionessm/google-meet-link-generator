@@ -31,7 +31,7 @@ The application logic is divided into two distinct parts:
 #### 1. Authentication Flow
 - **Purpose**: Handle OAuth2 authentication with Google
 - **Methods**: 
-  - `getSessionToken()` - Generates OAuth2 authorization URL and opens browser. This will automatically happen thanks to the open library and you will land on a step similar to the one ilustrated below after choosing your google account.
+  - `getSessionToken()` - Generates OAuth2 authorization URL and opens browser. This will automatically happen thanks to the open library and you will land on a step similar to the one illustrated below after choosing your google account.
 ![Acces to App](./dev_rel_meet_mvp.png)
 
   - `getTokenFromCode()` - Exchanges authorization code for access/refresh tokens
@@ -98,7 +98,7 @@ Getting credentials for using your personal email as a bot. An alternative was t
 Once the endpoint was implemented and I added the logic for the refresh_token and access_token, the implementation went smoothly.
 
 **Setup of generateAuthUrl considerations**:
-- By using `generateAuthUrl()` with `access_type: 'offline'`, we get a refresh token. This is very important for the developement phases. In addition to this, I also added the `prompt: 'consent'` parameter which ensures the refresh token is always returned (important for subsequent requests).
+- By using `generateAuthUrl()` with `access_type: 'offline'`, we get a refresh token. This is very important for the development phases. In addition to this, I also added the `prompt: 'consent'` parameter which ensures the refresh token is always returned (important for subsequent requests).
 
 **OAuth Scopes - Important Considerations**:
 - The `scope` parameter in `generateAuthUrl()` defines what permissions your app needs. For this project, we use: `'https://www.googleapis.com/auth/calendar'` because it allows the app to create, read, update, and delete calendar events.
