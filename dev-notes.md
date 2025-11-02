@@ -96,7 +96,7 @@ Getting credentials for using your personal email as a bot. An alternative is to
 Once the endpoint was implemented and I added the logic for the refresh_token and access_token, the implementation went smoothly.
 
 **Setup of generateAuthUrl considerations**:
-- By using `generateAuthUrl()` with `access_type: 'offline'`, we get a refresh token. This is very important for the developement phases. In addition to this I also added the `prompt: 'consent'` parameter ensures the refresh token is always returned (important for subsequent requests).
+- By using `generateAuthUrl()` with `access_type: 'offline'`, we get a refresh token. This is very important for the developement phases. In addition to this, I also added the `prompt: 'consent'` parameter which ensures the refresh token is always returned (important for subsequent requests).
 
 **OAuth Scopes - Important Considerations**:
 - The `scope` parameter in `generateAuthUrl()` defines what permissions your app needs. For this project, we use: `'https://www.googleapis.com/auth/calendar'` because it allows the app to create, read, update, and delete calendar events.
