@@ -2,12 +2,22 @@
 
 A NestJS-based backend application that programmatically generates Google Meet links by creating calendar events with Meet video conferencing enabled.
 
+## About
+
+This project demonstrates:
+- **NestJS** framework for modular, scalable Node.js applications
+- **Google Calendar API** integration via the official `googleapis` Node.js client
+- **OAuth2 authentication** flow with refresh token management
+- **Programmatic Meet link generation** through calendar events
+
+For detailed technical decisions, architecture breakdown, and setup challenges, see [dev-notes.md](dev-notes.md).
+
 ## Quick Start
 
 ### Prerequisites
 - Node.js 18+
 - Google Cloud Console account
-- OAuth 2.0 credentials (see DEV-DIARY.md for detailed setup)
+- OAuth 2.0 credentials (see dev-notes.md for detailed setup)
 
 ### Installation
 
@@ -72,7 +82,7 @@ curl --location 'http://localhost:3010' \
 
 ## Detailed Setup
 
-For comprehensive setup instructions, OAuth credential configuration, and implementation details, see [DEV-DIARY.md](DEV-DIARY.md).
+For comprehensive setup instructions, OAuth credential configuration, and implementation details, see [dev-notes.md](dev-notes.md).
 
 ## API Endpoints
 
