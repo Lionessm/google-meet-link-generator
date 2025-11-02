@@ -1,6 +1,7 @@
 import { Body, Controller, Get, Post, Query } from '@nestjs/common';
-import { AppService, MeetingEventResult } from './app.service';
+import { AppService } from './app.service';
 import { CreateMeetingEventParams } from './types/CreateMeetingEventParams.type';
+import { MeetingEventResult } from './types/MeetingEventResult.type';
 
 @Controller()
 export class AppController {
@@ -16,8 +17,7 @@ export class AppController {
     return this.appService.getSessionToken();
   }
 
-  // Used only for initial setup
-  @Get('auth/google') // This is the URL that Google will redirect to after authorization
+  @Get('auth/google')
   async googleCallback(@Query('code') code: string): Promise<void> {
     return this.appService.getTokenFromCode(code);
   }

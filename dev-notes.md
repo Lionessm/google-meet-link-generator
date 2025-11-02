@@ -31,7 +31,9 @@ The application logic is divided into two distinct parts:
 #### 1. Authentication Flow
 - **Purpose**: Handle OAuth2 authentication with Google
 - **Methods**: 
-  - `getSessionToken()` - Generates OAuth2 authorization URL and opens browser
+  - `getSessionToken()` - Generates OAuth2 authorization URL and opens browser. This will automatically happen thanks to the open library and you will land on a step similar to the one ilustrated below after choosing your google account.
+![Acces to App](./dev_rel_meet_mvp.png)
+
   - `getTokenFromCode()` - Exchanges authorization code for access/refresh tokens
 - **Endpoints**:
   - `GET /auth/google/refresh-token` - Initiates authentication
@@ -50,7 +52,7 @@ The application logic is divided into two distinct parts:
 **Note**: The biggest stressor in this implementation is getting the credentials you need. As such, here is a detailed overview of how to achieve that.
 
 ### Approach
-Getting credentials for using your personal email as a bot. An alternative is to have Google Workspace (organization) account in order to provide Domain-Wide delegations access; however, I used a simple email in order to achieve this MVP as I did not have access to an organization workspace. You can find additional information on the Domain Wide Delegation Access here: https://developers.google.com/identity/protocols/oauth2/service-account#delegatingauthority.
+Getting credentials for using your personal email as a bot. An alternative was to have Google Workspace (organization) account in order to provide Domain-Wide Delegations access; however, I used a simple email in order to achieve this MVP as I did not have access to an organization workspace. You can find additional information on the Domain Wide Delegation Access here: https://developers.google.com/identity/protocols/oauth2/service-account#delegatingauthority.
 
 ### Step-by-Step Guide
 
@@ -67,7 +69,7 @@ Getting credentials for using your personal email as a bot. An alternative is to
 3. **Create OAuth 2.0 Credentials**
    - Go to "APIs & Services" → "Credentials"
    - Click "Create Credentials" → "OAuth client ID"
-   - If prompted, configure the OAuth consent screen:
+   - Cconfigure the OAuth consent screen:
      - Choose "External" user type
      - Fill in app name, user support email
    - Create OAuth Client ID:
@@ -76,7 +78,7 @@ Getting credentials for using your personal email as a bot. An alternative is to
      - **Authorized redirect URIs**: `http://localhost:3010/auth/google`
    
 4. **Save Your Credentials**
-   - Copy the Client ID and Client Secret and Google redirect URI
+   - Copy the Client ID, Client Secret and Google redirect URI
    - Add them to your `.env` file
 
 5. **Add Yourself as Test User**
@@ -104,12 +106,20 @@ Once the endpoint was implemented and I added the logic for the refresh_token an
 - For this MVP, we only request Calendar permissions, which is sufficient for generating Meet links through calendar events 
 
 6. **Installed `open` Package for Automatic Window Opening**
-   - In order to avoid a tedious debugging session while testing, I added the open package that redirects to the authentication browser, for an easier experience.
+- In order to avoid a tedious debugging session while testing, I added the open package that redirects to the authentication browser, for an easier experience.
 
 7. **Interesting metrics to consider and monitor**
-   - In your app dashboard, you will find something similar to the below image. It is a powerful monitoring tool worth exploring.
+- In your app dashboard, you will find something similar to the below image. It is a powerful monitoring tool worth exploring.
 
 ![APIs and Services Dashboard](./apis_and_services.png)
+
+8. **Implemented Improvement: Sending email to recipients**
+- A good improvement is to enable Gmail API integration to automatically send Meet link invitations to attendees
+- **Gmail Scope**: `https://www.googleapis.com/auth/gmail.send` - this link is needed for the initial instantiation of OAuth and the token and refresh_token contain the permissions based on the scope so I added it to the SCOPE variable.
+- IMPORTANT: Because we have previously set up the OAuth client credentials, we no longer need to add other credentials as they are available per project. However, we have to **Enable Google Email API** as we do not have it enabled by default. So we will go again to the Project page, APIs and services -> Enable APIs -> Gmail API -> and enable.
+- The only step left is to add the email sending logic and the email body. I added a separate emailTemplate file for better readability and highly recommend it in case you want to vary between templates and have modular extensible best coding practices. And below you can see the final result:
+
+![Sent Email](./sent_email.png)
 
 ### Environment Variables Required
 ```env
@@ -126,4 +136,6 @@ GOOGLE_ACCESS_TOKEN=''
 - **Official Documentation**: [google-api-nodejs-client](https://github.com/googleapis/google-api-nodejs-client?tab=readme-ov-file#oauth2-client)
 - **Google Calendar API**: https://developers.google.com/calendar
 - **Google Cloud Console**: https://console.cloud.google.com/
+- **Google Domain Delegation Authority**: https://developers.google.com/identity/protocols/oauth2/service-account#delegatingauthority
+
 

@@ -4,6 +4,7 @@ import { google } from 'googleapis';
 import open from 'open';
 import { CreateMeetingEventParams } from './types/CreateMeetingEventParams.type';
 import { MeetingEventResult } from './types/MeetingEventResult.type';
+import { MEET_INVITE_TEMPLATE } from './config/emailTemplate';
 
 @Injectable()
 export class AppService {
@@ -25,6 +26,7 @@ export class AppService {
     }
     const SCOPES = [
       'https://www.googleapis.com/auth/calendar',
+      'https://www.googleapis.com/auth/gmail.send',
     ];
 
     const authUrl = this.oAuth2Client.generateAuthUrl({
@@ -73,13 +75,60 @@ export class AppService {
     });
 
 
+    const meetLink = event.data.conferenceData?.entryPoints?.[0]?.uri;
+    const eventSummary = event.data.summary;
+    const eventStart = event.data.start?.dateTime;
+
+    // Send email to attendees if there are any
+    if (attendeesEmails.length > 0 && meetLink) {
+      await this.sendEmailWithMeetLink(attendeesEmails, eventSummary, meetLink);
+    }
+
     return {
-      summary: event.data.summary,
-      start: event.data.start?.dateTime,
-      meetLink: event.data.conferenceData?.entryPoints?.[0]?.uri,
+      summary: eventSummary,
+      start: eventStart,
+      meetLink,
     };
   }
-}
 
-export { MeetingEventResult };
+  /**
+   * Sends an email with the Google Meet link to attendees
+   */
+  private async sendEmailWithMeetLink(
+    recipients: string[],
+    eventTitle: string,
+    meetLink: string,
+  ): Promise<void> {
+    const gmail = google.gmail({ version: 'v1', auth: this.oAuth2Client });
+
+    const toField = recipients.join(', ');
+    const subject = `Meeting Invitation: ${eventTitle}`;
+    const body = MEET_INVITE_TEMPLATE(eventTitle, meetLink);
+
+    const messageLines = [
+      `To: ${toField}`,
+      'Content-Type: text/plain; charset=UTF-8',
+      `Subject: ${subject}`,
+      '',
+      body,
+    ];
+
+    const message = messageLines.join('\n');
+
+    const encodedMessage = Buffer.from(message)
+      .toString('base64')
+      .replace(/\+/g, '-')
+      .replace(/\//g, '_')
+      .replace(/=+$/, '');
+
+    try {
+      await gmail.users.messages.send({
+        userId: 'me',
+        requestBody: { raw: encodedMessage },
+      });
+    } catch (error) {
+      console.error('❌ Failed to send email:', error);
+    }
+  }
+}
 
