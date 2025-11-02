@@ -18,7 +18,7 @@
 ### Why Google APIs Node.js Client for Meet SDK?
 **Decision**: Use `googleapis` (Google APIs Node.js Client Library) instead of a standalone Meet SDK
 
-**Reasoning**: It is the official supported way of creating meetings on google. Whenever we see oficial documentation with clear aspects and maintained support, it is the best choice.
+**Reasoning**: This is the officially supported method for creating Google meetings. When official documentation provides clear guidelines and ongoing support, it is generally the best choice.
 
 **Alternatives Considered**:
 - Standalone Meet SDK: Doesn't exist; Meet links are part of Calendar events
@@ -106,7 +106,7 @@ Once the endpoint was implemented and I added the logic for the refresh_token an
 - For this MVP, we only request Calendar permissions, which is sufficient for generating Meet links through calendar events 
 
 6. **Installed `open` Package for Automatic Window Opening**
-- In order to avoid a tedious debugging session while testing, I added the open package that redirects to the authentication browser, for an easier experience.
+- To avoid the tedious process of copying and pasting URLs from the debug console, I added the open package to automatically redirect to the authentication browser. This simplifies the workflow and would also benefit a frontend implementation. I chose the `open` library because it is widely used, actively maintained, and has over 50 million weekly downloads, indicating that it is both reliable and robust
 
 7. **Interesting metrics to consider and monitor**
 - In your app dashboard, you will find something similar to the below image. It is a powerful monitoring tool worth exploring.
@@ -117,7 +117,7 @@ Once the endpoint was implemented and I added the logic for the refresh_token an
 - A good improvement is to enable Gmail API integration to automatically send Meet link invitations to attendees
 - **Gmail Scope**: `https://www.googleapis.com/auth/gmail.send` - this link is needed for the initial instantiation of OAuth and the token and refresh_token contain the permissions based on the scope so I added it to the SCOPE variable.
 - ⚠️ **IMPORTANT**: Because we have previously set up the OAuth client credentials, we no longer need to add other credentials as they are available per project. However, we have to **Enable Gmail API** as we do not have it enabled by default. Go to Project page → APIs & Services → Enable APIs → Search "Gmail API" → Enable.
-- The only step left is to add the email sending logic and the email body. I added a separate emailTemplate file for better readability and highly recommend it in case you want to vary between templates and have modular extensible best coding practices. And below you can see the final result:
+- The only step left is to add the email sending logic and the email body. I added a separate `emailTemplate` file for better readability and highly recommend it in case you want to switch between templates and have modular extensible best coding practices. And below you can see the final result:
 
 ![Sent Email](./sent_email.png)
 
